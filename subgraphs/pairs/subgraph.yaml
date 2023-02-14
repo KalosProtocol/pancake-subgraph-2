@@ -1,0 +1,30 @@
+specVersion: 0.0.2
+description: Track Pairs and Tokens on KalosDeFi protocol
+repository: https://github.com/kalosprotocol
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Factory
+    network: bsc
+    source:
+      address: '0x2f4A4b8DcCDbE1e3eeF08f52C81627C8DB009276'
+      abi: Factory
+      startBlock: 6809737
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./mappings/factory.ts
+      entities:
+        - Factory
+        - Token
+        - Pair
+      abis:
+        - name: Factory
+          file: ./abis/Factory.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: PairCreated(indexed address,indexed address,address,uint256)
+          handler: handlePairCreated
